@@ -3,5 +3,4 @@ public class Practice {
     public static void greet() {
         System.debug('hello world!!');
     }
-    
 }
