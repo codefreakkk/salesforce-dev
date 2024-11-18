@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>From_and_To_Validation_Rule</fullName>
+    <active>true</active>
+    <description>Validation for From and To Text Field</description>
+    <errorConditionFormula>OR (ISBLANK( From__c ), ISBLANK( To__c ))</errorConditionFormula>
+    <errorMessage>From and To Field cannot be blank</errorMessage>
+</ValidationRule>

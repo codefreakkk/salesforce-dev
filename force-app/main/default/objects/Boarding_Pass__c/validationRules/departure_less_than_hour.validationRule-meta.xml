@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>departure_less_than_hour</fullName>
+    <active>true</active>
+    <description>if flight departure time is less than an hour and hasboarded is not set to true then throw error</description>
+    <errorConditionFormula>AND(
+    NOT(hasboarded__c),
+    (Flight_Id__r.Departure_date_and_Time__c - NOW()) * 1440 &lt; 60,
+    (Flight_Id__r.Departure_date_and_Time__c - NOW()) * 1440 &gt;= 0
+)</errorConditionFormula>
+    <errorMessage>Boarding pass cannot be generated</errorMessage>
+</ValidationRule>

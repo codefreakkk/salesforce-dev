@@ -1,4 +1,4 @@
-trigger AccountTrigger on Account (before insert, after insert) {
+trigger AccountTrigger on Account (before insert, after insert, before update) {
     AccountTriggerHandler accountTriggerHandler = new AccountTriggerHandler();
 
     if (Trigger.isInsert) {
@@ -7,7 +7,7 @@ trigger AccountTrigger on Account (before insert, after insert) {
             accountTriggerHandler.updateAccountDescription(Trigger.New);
             
             // If account Industry is not null and having value as 'Media' then populate rating as Hot
-            accountTriggerHandler.updateRatingToHot(Trigger.New);
+            accountTriggerHandler.updateRatingToHot(Trigger.New, null);
         }
 
         if (Trigger.isAfter) {
@@ -16,6 +16,16 @@ trigger AccountTrigger on Account (before insert, after insert) {
 
             // when account is created with type as prospect assign task to logged in user
             accountTriggerHandler.createTaskForUser(Trigger.New);
+        }
+    }
+
+    if (Trigger.isUpdate) {
+
+        if (Trigger.isBefore) {
+            System.debug('Before update trigger called');
+            
+            // If account Industry is not null and having value as 'Media' then populate rating as Hot
+            accountTriggerHandler.updateRatingToHot(Trigger.New, Trigger.OldMap);
         }
     }
 }

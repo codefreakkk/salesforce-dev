@@ -5,11 +5,17 @@ public with sharing class AccountTriggerHandler {
         }
     }
 
-    public void updateRatingToHot(List<Account> accountList) {
+    public void updateRatingToHot(List<Account> accountList, Map<Id, Account> oldAccountMap) {
+        System.debug('Update Rating to Hot method called');
+        
         for (Account accounts : accountList) {
-            if (accounts.Industry != NULL && accounts.Industry.equals('Media')) {
+            if (oldAccountMap == null && accounts.Industry != NULL && accounts.Industry.equals('Media')) {
                 accounts.Rating = 'Hot';
-                System.debug('Updated Rating to Hot');
+                System.debug('Before Insert : Updated Rating to Hot');
+            }
+            if (accounts.Industry != oldAccountMap.get(accounts.Id).Industry && accounts.Industry.equals('Media')) {
+                accounts.Rating = 'Hot';
+                System.debug('Before Update : Updated Rating to Hot');
             }
         }
     }
@@ -30,9 +36,13 @@ public with sharing class AccountTriggerHandler {
         }
         
         // create opportunity
-        if (!opportunityList.isEmpty()) {
-            insert opportunityList;
-            System.debug('Opportunity created');
+        try {
+            if (!opportunityList.isEmpty()) {
+                insert opportunityList;
+                System.debug('Opportunity created');
+            }
+        } catch (Exception e) {
+            System.debug('Some error occured ' + e.getMessage());
         }
     }
 
@@ -50,9 +60,13 @@ public with sharing class AccountTriggerHandler {
             taskList.add(task);
         }
 
-        if (!taskList.isEmpty()) {
-            insert taskList;
-            System.debug('Task created');
+        try {
+            if (!taskList.isEmpty()) {
+                insert taskList;
+                System.debug('Task created');
+            }
+        } catch (Exception e) {
+            System.debug('Some error occured ' + e.getMessage());
         }
     }
 }

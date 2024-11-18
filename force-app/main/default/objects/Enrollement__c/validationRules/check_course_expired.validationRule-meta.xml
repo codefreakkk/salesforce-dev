@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>check_course_expired</fullName>
+    <active>true</active>
+    <errorConditionFormula>Course_Expired__c</errorConditionFormula>
+    <errorDisplayField>Cours__c</errorDisplayField>
+    <errorMessage>The Duration of course has ended</errorMessage>
+</ValidationRule>

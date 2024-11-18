@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Course_opted__c</fullName>
+    <description>this is course opted description</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Please select course</inlineHelpText>
+    <label>Course Opted</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>stream_opted__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetName>Course</valueSetName>
+        <valueSettings>
+            <controllingFieldValue>Mobile App Development</controllingFieldValue>
+            <controllingFieldValue>Web Development</controllingFieldValue>
+            <valueName>Java</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Mobile App Development</controllingFieldValue>
+            <valueName>Android Studio</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Web Development</controllingFieldValue>
+            <valueName>React</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Web Development</controllingFieldValue>
+            <valueName>Javascript</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cloud computing</controllingFieldValue>
+            <controllingFieldValue>Devops</controllingFieldValue>
+            <valueName>Aws</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cloud computing</controllingFieldValue>
+            <controllingFieldValue>Devops</controllingFieldValue>
+            <valueName>Linux</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Devops</controllingFieldValue>
+            <valueName>Python</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Devops</controllingFieldValue>
+            <valueName>Jenkins</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

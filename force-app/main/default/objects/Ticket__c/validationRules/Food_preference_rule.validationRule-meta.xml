@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Food_preference_rule</fullName>
+    <active>true</active>
+    <errorConditionFormula>Fare__c &gt; 5000 &amp;&amp; ISBLANK( foodpreference__c )</errorConditionFormula>
+    <errorDisplayField>foodpreference__c</errorDisplayField>
+    <errorMessage>Fare is greater than 5000 food preference as is required</errorMessage>
+</ValidationRule>

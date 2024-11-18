@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validation_rule_for_age</fullName>
+    <active>true</active>
+    <errorConditionFormula>NOT(ISNUMBER(Age__c)) || (ISNUMBER(Age__c) &amp;&amp; VALUE(Age__c) &lt; 0)</errorConditionFormula>
+    <errorDisplayField>Age__c</errorDisplayField>
+    <errorMessage>The age should be number</errorMessage>
+</ValidationRule>

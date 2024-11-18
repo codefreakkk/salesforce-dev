@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validation_rule_for_college</fullName>
+    <active>true</active>
+    <errorConditionFormula>NOT (
+  CONTAINS( LOWER(College_Name__c) , &quot;vit&quot;) ||
+  CONTAINS( LOWER(College_Name__c), &quot;pict&quot;) ||
+  CONTAINS( LOWER(College_Name__c), &quot;pccoe&quot;)
+)</errorConditionFormula>
+    <errorDisplayField>College_Name__c</errorDisplayField>
+    <errorMessage>College not found</errorMessage>
+</ValidationRule>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>stream_opted__c</fullName>
+    <description>this is description</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Enter your stream</inlineHelpText>
+    <label>Stream Opted</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Mobile App Development</fullName>
+                <default>false</default>
+                <label>Mobile App Development</label>
+            </value>
+            <value>
+                <fullName>Web Development</fullName>
+                <default>false</default>
+                <label>Web Development</label>
+            </value>
+            <value>
+                <fullName>Cloud computing</fullName>
+                <default>false</default>
+                <label>Cloud computing</label>
+            </value>
+            <value>
+                <fullName>Devops</fullName>
+                <default>false</default>
+                <label>Devops</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

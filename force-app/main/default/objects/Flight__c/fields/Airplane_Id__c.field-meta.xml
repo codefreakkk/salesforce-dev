@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Airplane_Id__c</fullName>
+    <externalId>false</externalId>
+    <label>Airplane Id</label>
+    <referenceTo>Airplane__c</referenceTo>
+    <relationshipLabel>Flights</relationshipLabel>
+    <relationshipName>Flights</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>
