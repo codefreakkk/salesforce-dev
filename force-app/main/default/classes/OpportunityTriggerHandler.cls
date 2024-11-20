@@ -31,4 +31,54 @@ public class OpportunityTriggerHandler {
             update opportunitiesToBeUpdated;
         }
     }
+
+    public void updateTotalNumberOfOpportunities(List<Opportunity> opportunityList) {
+        Set<Id> accountIds = new Set<Id>();
+        for (Opportunity opportunity : opportunityList) {
+            accountIds.add(opportunity.AccountId);
+        }
+
+        List<Account> accountList = new List<Account>();
+        for (Account account : [SELECT Id, (SELECT Id FROM Opportunities WHERE StageName = 'Closed Won') FROM Account WHERE Id IN :accountIds]) {
+            Account currentAccount = new Account();
+            currentAccount.Id = account.Id;
+            currentAccount.Total_Opportunities__c = account.Opportunities.size();
+
+            accountList.add(currentAccount);
+        }
+
+        try {
+            update accountList;
+        } catch (Exception e) {
+            System.debug(e.getMessage());
+        }
+    }
+
+    public void updateContactEmailField(List<Opportunity> opportunityList, Map<Id, Opportunity> oldOpportunityMap) {
+        Set<Id> contactIds = new Set<Id>();
+
+        
+        for (Opportunity opportunity : opportunityList) {
+            if (opportunity.StageName != oldOpportunityMap.get(opportunity.Id).StageName && opportunity.StageName == 'Closed Won') {
+                contactIds.add(opportunity.ContactId);
+            }
+        }
+        System.debug('Contact Ids : ' + contactIds);
+
+        List<Contact> contactList = new List<Contact>();
+        for (Contact contact : [SELECT Id, Email FROM Contact WHERE Id IN :contactIds]) {
+            contact.email = 'won@opportunity.com';
+            contactList.add(contact);
+        }
+        System.debug('Contacts : ' + contactList);
+
+        try {
+            if (!contactList.isEmpty()) {
+                update contactList;
+                System.debug('Contacts updated');
+            }
+        } catch (Exception e) {
+            System.debug('Exception : ' + e.getMessage());
+        }
+    }
 }

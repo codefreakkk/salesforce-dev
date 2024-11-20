@@ -1,4 +1,4 @@
-trigger OpportunityTrigger on Opportunity (after update, before update) {
+trigger OpportunityTrigger on Opportunity (after update, before update, after insert, after delete) {
     OpportunityTriggerHandler opportunityTriggerHandler = new OpportunityTriggerHandler();
     
     if (Trigger.isUpdate) {
@@ -10,6 +10,25 @@ trigger OpportunityTrigger on Opportunity (after update, before update) {
         
         if (Trigger.isAfter) {
             opportunityTriggerHandler.updateOpportunityDescription(Trigger.New, Trigger.OldMap);
+
+            opportunityTriggerHandler.updateTotalNumberOfOpportunities(Trigger.New);
+
+            // Update Contact’s Email on Opportunity Stage Change
+            opportunityTriggerHandler.updateContactEmailField(Trigger.New, Trigger.OldMap); 
+
+        }
+    }
+
+    if (Trigger.isInsert) {
+        if (Trigger.isAfter) {
+            opportunityTriggerHandler.updateTotalNumberOfOpportunities(Trigger.New);
+        }
+    }
+
+
+    if (Trigger.isDelete) {
+        if (Trigger.isAfter) {
+            opportunityTriggerHandler.updateTotalNumberOfOpportunities(Trigger.New);
         }
     }
 }

@@ -5,17 +5,11 @@ public with sharing class AccountTriggerHandler {
         }
     }
 
-    public void updateRatingToHot(List<Account> accountList, Map<Id, Account> oldAccountMap) {
-        System.debug('Update Rating to Hot method called');
-        
+    public void updateRatingToHot(List<Account> accountList) {
         for (Account accounts : accountList) {
-            if (oldAccountMap == null && accounts.Industry != NULL && accounts.Industry.equals('Media')) {
+            if (accounts.Industry != NULL && accounts.Industry.equals('Media')) {
                 accounts.Rating = 'Hot';
-                System.debug('Before Insert : Updated Rating to Hot');
-            }
-            if (accounts.Industry != oldAccountMap.get(accounts.Id).Industry && accounts.Industry.equals('Media')) {
-                accounts.Rating = 'Hot';
-                System.debug('Before Update : Updated Rating to Hot');
+                System.debug('Updated Rating to Hot');
             }
         }
     }
@@ -36,13 +30,9 @@ public with sharing class AccountTriggerHandler {
         }
         
         // create opportunity
-        try {
-            if (!opportunityList.isEmpty()) {
-                insert opportunityList;
-                System.debug('Opportunity created');
-            }
-        } catch (Exception e) {
-            System.debug('Some error occured ' + e.getMessage());
+        if (!opportunityList.isEmpty()) {
+            insert opportunityList;
+            System.debug('Opportunity created');
         }
     }
 
@@ -60,13 +50,52 @@ public with sharing class AccountTriggerHandler {
             taskList.add(task);
         }
 
-        try {
-            if (!taskList.isEmpty()) {
-                insert taskList;
-                System.debug('Task created');
-            }
-        } catch (Exception e) {
-            System.debug('Some error occured ' + e.getMessage());
+        if (!taskList.isEmpty()) {
+            insert taskList;
+            System.debug('Task created');
         }
     }
+
+    public void updateAccountDescriptionAfterUpdate(List<Account> accountList) {
+        List<Account> accountsToBeUpdated = new List<Account>();
+
+        for (Account acc : accountList) {
+            Account account = new Account();
+            account.Description = 'Account description updated via trigger';
+            account.Id = acc.Id;
+            
+            accountsToBeUpdated.add(account);
+        }
+
+        if (!accountsToBeUpdated.isEmpty()) {
+            update accountsToBeUpdated;
+            System.debug('Account Description Updated after update trigger');
+        }
+    }
+    
+    public void preventDeletionOfAccountWithActiveOpportunities(List<Account> accountList) {
+        System.debug('Prevent delete function called');
+        
+        Set<Id> accountIds = new Set<Id>();
+        for (Account account : accountList) {
+            accountIds.add(account.Id);
+        }
+
+        System.debug('Account Ids : ' + accountIds);
+
+        List<String> stages = new List<String>{'Perception Analysis', 'Proposal/Price Quote'};
+        Set<Id> accountIdWithRelatedOpportunity = new Set<Id>();
+        for (Opportunity opportunity : [SELECT AccountId FROM Opportunity WHERE StageName IN :stages AND AccountId IN :accountIds]) {
+            accountIdWithRelatedOpportunity.add(opportunity.AccountId);
+        }
+
+        System.debug('Account Ids with related opportunity : ' + accountIdWithRelatedOpportunity);
+
+        for (Account account : accountList) {
+            if (accountIdWithRelatedOpportunity.contains(account.Id)) {
+                account.addError('Account cannot be deleted as it has related opportunity with Perception Analysis or Proposal/Price Quote ');
+                System.debug('Inside loop');
+            }
+        }
+    }    
 }
