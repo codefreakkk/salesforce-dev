@@ -39,4 +39,36 @@ public with sharing class OpportunityTriggerHandlerTest {
         System.assertEquals(expectedOpportunities, testAccount[0].Total_Opportunities__c, 'Total_Opportunities__c should match the number of Closed Won opportunities.');
     }
 
+    @isTest
+    static void updateTotalNumberOfOpportunitiesAfterDelete() {
+        Account account = new Account(Name='Test Name');
+        insert account;
+
+        Opportunity opportunity1 = new Opportunity(
+            Name='Test opp 1',
+            CloseDate=Date.Today(),
+            StageName='Closed Won',
+            AccountId=account.Id,
+            amount=100
+        );
+
+        Opportunity opportunity2 = new Opportunity(
+            Name='Test opp 2',
+            CloseDate=Date.Today(),
+            StageName='Prospecting',
+            AccountId = account.Id,
+            amount=0
+        );
+
+        insert new List<Opportunity>{opportunity1, opportunity2};
+		List<Account> testAccount = [SELECT Id, Total_Opportunities__c, (SELECT Id FROM Opportunities WHERE StageName = 'Closed Won') FROM Account WHERE Id = :account.Id];
+        System.assertEquals(1, testAccount[0].Total_Opportunities__c, 'Total_Opportunities__c should match the number of Closed Won opportunities.');
+        
+        // delete opportunity for trigger
+        delete opportunity1;
+
+        testAccount = [SELECT Id, Total_Opportunities__c, (SELECT Id FROM Opportunities WHERE StageName = 'Closed Won') FROM Account WHERE Id = :account.Id];
+        Integer expectedOpportunities = testAccount[0].Opportunities.size();
+        System.assertEquals(expectedOpportunities, testAccount[0].Total_Opportunities__c, 'Total_Opportunities__c should match the number of Closed Won opportunities.');
+    }
 }

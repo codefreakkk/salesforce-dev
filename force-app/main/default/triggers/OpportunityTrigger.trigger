@@ -28,7 +28,7 @@ trigger OpportunityTrigger on Opportunity (after update, before update, after in
 
     if (Trigger.isDelete) {
         if (Trigger.isAfter) {
-            opportunityTriggerHandler.updateTotalNumberOfOpportunities(Trigger.New);
+            opportunityTriggerHandler.updateTotalNumberOfOpportunities(Trigger.Old);
         }
     }
 }
