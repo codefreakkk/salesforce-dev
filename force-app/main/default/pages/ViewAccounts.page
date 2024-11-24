@@ -1,0 +1,27 @@
+<apex:page controller="AccountController">
+    <c:CreateAccountComponent />
+    <apex:form >
+        <apex:pageBlock title="Account List">
+            <apex:pageBlockTable value="{!accounts}" var="account" id="accountTable">
+                
+                <apex:column headerValue="Account Name">
+                    <apex:outputText value="{!account.Name}"></apex:outputText>
+                </apex:column>
+                <apex:column headerValue="Phone">
+                    <apex:outputText value="{!account.Phone}"></apex:outputText>
+                </apex:column>
+                <apex:column headerValue="Industry">
+                    <apex:outputText value="{!account.Industry}"></apex:outputText>
+                </apex:column>
+                <apex:column headerValue="Action">
+                    <apex:commandButton value="Delete"
+                    action="{!deleteAccount}"
+                    reRender="accountTable">
+                        <apex:param name="accountId" value="{!account.Id}" assignTo="{!accountId}"></apex:param>
+                    </apex:commandButton>
+                </apex:column>
+
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

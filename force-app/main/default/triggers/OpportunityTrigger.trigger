@@ -11,11 +11,13 @@ trigger OpportunityTrigger on Opportunity (after update, before update, after in
         if (Trigger.isAfter) {
             opportunityTriggerHandler.updateOpportunityDescription(Trigger.New, Trigger.OldMap);
 
-            opportunityTriggerHandler.updateTotalNumberOfOpportunities(Trigger.New);
+            opportunityTriggerHandler.updateTotalNumberOfOpportunitiesAfterUpdate(Trigger.New, Trigger.OldMap);
 
             // Update Contact’s Email on Opportunity Stage Change
             opportunityTriggerHandler.updateContactEmailField(Trigger.New, Trigger.OldMap); 
 
+            // create task for opportunity owner when StageName is updated to 'Closed Won'
+            opportunityTriggerHandler.autoAssignTaskBasedOnOpportunityStage(Trigger.New, Trigger.OldMap);
         }
     }
 

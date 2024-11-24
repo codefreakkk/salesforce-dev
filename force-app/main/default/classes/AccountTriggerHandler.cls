@@ -24,7 +24,7 @@ public with sharing class AccountTriggerHandler {
             opportunity.CloseDate = System.today();
             opportunity.StageName = 'Prospecting';
             opportunity.AccountId = accounts.Id;
-            /* accounts.AnnualRevenue = 10000 // This is not allowes as account is read only
+            /* accounts.AnnualRevenue = 10000 // This is not allowed as account is read only
             As we know the records that fire after the trigger are read-only */
             opportunityList.add(opportunity);
         }
@@ -97,5 +97,50 @@ public with sharing class AccountTriggerHandler {
                 System.debug('Inside loop');
             }
         }
-    }    
+    }   
+
+    public void preventDuplicateAccount(List<Account> accountList) {
+        // store all account name
+        List<String> accountNames = new List<String>();
+        for (Account account : accountList) {
+            accountNames.add(account.Name);
+        }
+
+        // get all matching account names
+        List<String> accountNamesFromObject = new List<String>();
+        for (Account account : [SELECT Id, Name FROM Account WHERE Name IN :accountNames]) {
+            accountNamesFromObject.add(account.Name);
+        }
+
+        // check if account name already exist's
+        for (Account account : accountList) {
+            if (accountNamesFromObject.contains(account.Name)) {
+                account.addError('Account with ' + account.Name + ' already exists');
+            }
+        }
+    } 
+
+    public void preventDuplicateAccountWithinSameIndustry(List<Account> accountList) {
+        // store all account name
+        List<String> accountNames = new List<String>();
+        for (Account account : accountList) {
+            accountNames.add(account.Name);
+        }
+
+        System.debug('Account Names : ' + accountNames);
+
+        Map<String, Account> accountsFromObject = new Map<String, Account>();
+        for (Account account : [SELECT Id, Name, Industry FROM Account WHERE Name IN :accountNames]) {
+            accountsFromObject.put(account.Name, account);
+            System.debug('Added to map');
+        }
+
+        System.debug('Accounts From Object ' + accountsFromObject);
+
+        for (Account account : accountList) {
+            if (accountsFromObject.containsKey(account.Name) && accountsFromObject.get(account.Name).Industry == account.Industry) {
+                account.addError('Account Name : ' + account.Name + ' exist with ' + account.Industry);
+            }
+        }
+    }
 }

@@ -17,4 +17,30 @@ public class ContactTriggerHandler {
             System.debug('Account total contact count updated');
         }
     }
+
+    public void sendEmailAfterContactInsert(List<Contact> contactList) {
+
+        List<String> contactIds = new List<String>();
+        for (Contact contact : contactList) {
+            contactIds.add(contact.Id);
+        }
+        System.debug('Contact Id : ' + contactIds);
+
+        if (!contactIds.isEmpty()) {
+            List<Messaging.MassEmailMessage> emails = new List<Messaging.MassEmailMessage>();
+            List<EmailTemplate> emailTemplate = [SELECT Id FROM EmailTemplate WHERE DeveloperName = 'Contact_Created_Email_Template'];
+
+            Messaging.MassEmailMessage massEmail = new Messaging.MassEmailMessage();
+            massEmail.setTargetObjectIds(contactIds);
+            massEmail.setTemplateId(emailTemplate[0].Id);
+            emails.add(massEmail);
+
+            try {
+                // Messaging.sendEmail(emails); commented temporarly 
+                System.debug('Mass Email Sent');
+            } catch (Exception e) {
+                System.debug(e.getMessage());
+            }
+        }
+    }
 }
