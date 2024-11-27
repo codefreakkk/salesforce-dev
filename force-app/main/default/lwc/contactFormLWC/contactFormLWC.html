@@ -1,0 +1,28 @@
+<template>
+    <lightning-card title="Add Contact">
+        <lightning-combobox 
+            label="Account"
+            value={account}
+            options={accountOptions}
+            onchange={handleAccount}
+        ></lightning-combobox>
+
+        <lightning-input
+            label="First Name"
+            value={firstName}
+            onchange={handleFirstName}>
+        </lightning-input>
+        
+        <lightning-input
+            label="Last Name"
+            value={lastName}
+            onchange={handleLastName}>
+        </lightning-input>
+        
+        <lightning-button 
+            label="Save"
+            onclick={handleSave}>
+        </lightning-button>
+    
+    </lightning-card>
+</template>
