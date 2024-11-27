@@ -143,4 +143,24 @@ public with sharing class AccountTriggerHandler {
             }
         }
     }
+
+    public void updateRelatedContactOfAccount(List<Account> accountList, Map<Id, Account> oldAccountMap) {
+        Map<Id, String> accountMap = new Map<Id, String>();
+
+        for (Account account : accountList) {
+            if (account.Phone != oldAccountMap.get(account.Id).Phone) {
+                accountMap.put(account.Id, account.Phone);
+            }
+        }
+
+        List<Contact> contactList = new List<Contact>();
+        for (Contact contact : [SELECT Id, Phone FROM Contact WHERE AccountId IN :accountMap.keySet()]) {
+            contact.Phone = accountMap.get(contact.Id);
+            contactList.add(contact);
+        }
+
+        if (!contactList.isEmpty()) {
+            update contactList;
+        }
+    }
 }

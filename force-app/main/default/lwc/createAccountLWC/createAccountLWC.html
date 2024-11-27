@@ -1,0 +1,12 @@
+<template>
+    <lightning-card>
+        <div class="container">
+            <lightning-input label="Account Name" type="text" value={accountInfo.Name} onchange={handleAccountNameChange}></lightning-input>
+            <lightning-combobox label="Type" options={accountTypes} value={accountInfo.Type} onchange={handleAccountTypeChange}></lightning-combobox>
+            <lightning-combobox label="Rating" options={accountRatings} value={accountInfo.Rating} onchange={handleRatingChange}></lightning-combobox>
+            <div class="button-container">
+                <lightning-button label="Create Account" onclick={handleCreateAccount}></lightning-button>
+            </div>
+        </div>
+        </lightning-card>
+</template>

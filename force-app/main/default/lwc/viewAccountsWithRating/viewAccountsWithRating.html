@@ -1,0 +1,30 @@
+<template>
+    <lightning-card title="Account With Rating">
+        <div class="slds-p-around_medium">
+            <lightning-combobox 
+                label="Account Rating" 
+                value={accountRating} 
+                options={accountRatingsOptions}
+                onchange={handleAccountRating} >
+            </lightning-combobox>
+        </div>
+
+        <div class="slds-p-around_medium">
+            <template if:true={accounts.data}>
+                <lightning-datatable
+                    key-field="id"
+                    data={accounts.data}
+                    columns={accountTableColumns}
+                    onrowaction={handleRowAction}
+                    >
+                </lightning-datatable>
+            </template>
+            <template if:true={error}>
+                <p class="slds-text-color_error">{error}</p>
+            </template>
+            <!-- <template if:false={accounts.data}>
+                <lightning-spinner alternative-text="Loading"></lightning-spinner>
+            </template> -->
+        </div>
+        </lightning-card>
+</template>

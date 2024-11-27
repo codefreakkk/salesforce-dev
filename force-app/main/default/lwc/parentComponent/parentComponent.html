@@ -1,0 +1,5 @@
+<template>
+    <lightning-button label="Call Child Method" onclick={handleCallChildMethod}></lightning-button>
+    <lightning-input type="text" value={employeeName} onchange={handleEmployeeName}></lightning-input>
+    <c-child-component name={employeeName}></c-child-component>
+</template>
