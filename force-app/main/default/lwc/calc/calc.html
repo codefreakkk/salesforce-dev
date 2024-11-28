@@ -1,0 +1,16 @@
+<template>
+    <lightning-card>
+        <lightning-input label="Input 1" value={value1} onchange={handleValue1}></lightning-input>
+        <lightning-input label="Input 2" value={value2} onchange={handleValue2}></lightning-input>
+        <div>
+            {message}
+        </div>
+
+        <lightning-button label="Addition" onclick={handleAdd}></lightning-button>
+        <lightning-button label="Sub" onclick={handleSub}></lightning-button>
+        <lightning-button label="Mul" onclick={handleMul}></lightning-button>
+        <lightning-button label="Div" onclick={handleDiv}></lightning-button>
+
+
+    </lightning-card>
+</template>
