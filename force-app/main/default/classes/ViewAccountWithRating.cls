@@ -21,5 +21,6 @@ public with sharing class ViewAccountWithRating {
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }
+        
     }
 }
