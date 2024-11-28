@@ -31,8 +31,6 @@ export default class ViewAccountsWithRating extends LightningElement {
         }
     ];
 
-
-
     @wire(getAccountWithRating, {rating: '$accountRating'})
     wiredAccount(result) {
         this.accounts = result;
