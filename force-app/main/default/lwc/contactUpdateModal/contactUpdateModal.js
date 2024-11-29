@@ -37,18 +37,15 @@ export default class ContactUpdateModal extends LightningModal {
             };
             const recordInput = {fields};
             const updateResult = await updateRecord(recordInput);
-            console.log("Updated result ", updateResult);
 
             // publish contact update event
             if (updateResult) {
-                console.log("EVENT PUBLISHED");
                 publish(this.messageContext, CONTACT_UPDATE_EVENT, {});
             }
 
             // toast
             this.showToast('Success', 'Contact Updated Successfully', 'success');
         } catch (error) {
-            console.log("Error while updating contact", error)
             this.showToast('Error', 'Error Updating Contact', 'error');
         }
     }

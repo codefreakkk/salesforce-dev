@@ -1,6 +1,6 @@
 public with sharing class ContactControllerLWC {
 
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled
     public static List<Contact> getAllContacts(String contact){
         try {
             String searchText = '%'+contact+'%';

@@ -1,9 +1,8 @@
 import { LightningElement, track, wire } from 'lwc';
 import getAllContacts from "@salesforce/apex/ContactControllerLWC.getAllContacts";
 import ContactUpdateModal from 'c/contactUpdateModal';
-import { MessageContext, subscribe } from 'lightning/messageService';
+import { MessageContext, subscribe, unsubscribe } from 'lightning/messageService';
 import CONTACT_UPDATE_EVENT from '@salesforce/messageChannel/ContactUpdateEvent__c';
-import {refreshApex} from "@salesforce/apex";
 
 
 export default class UpdateContactLWC extends LightningElement {
@@ -29,26 +28,25 @@ export default class UpdateContactLWC extends LightningElement {
     ]
 
     connectedCallback() {
-        subscribe(this.messageContext, CONTACT_UPDATE_EVENT, async (payload) => {
-            console.log("SUBSCRIBED TO EVENT");
-            await refreshApex(this.wiredContactResults);
-        });
+        this.refreshContact();
+        subscribe(this.messageContext, CONTACT_UPDATE_EVENT, (payload) => this.handleContactUpdateEvent());
     }
 
-    @wire(getAllContacts, {contact: '$contact'})
-    wiredContact(result) {
-        this.wiredContactResults = result;
-        const {error, data} = result; 
-        if (data) {
-            this.allContacts = data;
-        }
-        if (error) {
-            this.allContacts = undefined;
+    disconnectedCallback() {
+        unsubscribe(this.handleContactUpdateEvent);
+    }
+
+    async refreshContact() {
+        const result = await getAllContacts({contact: this.contact});
+        if (result) {
+            this.allContacts = [];
+            this.allContacts = result;
         }
     }
 
     handleContact(event) {
         this.contact = event.target.value;
+        this.refreshContact();
     }
 
     async handleUpdate(event) {
@@ -70,5 +68,9 @@ export default class UpdateContactLWC extends LightningElement {
                 },
             });
         }
+    }
+
+    async handleContactUpdateEvent() {
+        this.refreshContact();
     }
 }
