@@ -1,0 +1,16 @@
+<template>
+    <lightning-card title="Update Contact">
+        <div class="container">
+            <lightning-input label="Search contact" value={contact} onchange={handleContact}></lightning-input>
+            <template if:true={allContacts}>
+                <lightning-datatable 
+                    key-field="id" 
+                    hide-checkbox-column="true"
+                    data={allContacts} 
+                    columns={contactColumnsOptions} 
+                    onrowaction={handleUpdate}>  
+                </lightning-datatable>
+            </template>
+        </div>
+    </lightning-card>
+</template>

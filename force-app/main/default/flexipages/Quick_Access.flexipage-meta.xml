@@ -40,6 +40,12 @@
                 <identifier>flexipage_reportChart</identifier>
             </componentInstance>
         </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentName>parentComponent</componentName>
+                <identifier>c_parentComponent</identifier>
+            </componentInstance>
+        </itemInstances>
         <name>region2</name>
         <type>Region</type>
     </flexiPageRegions>
@@ -63,6 +69,24 @@
                 </componentInstanceProperties>
                 <componentName>flexipage:reportChart</componentName>
                 <identifier>flexipage_reportChart2</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentName>updateContactLWC</componentName>
+                <identifier>c_updateContactLWC</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentName>component1LMS</componentName>
+                <identifier>c_component1LMS</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
+                <componentName>component2LMS</componentName>
+                <identifier>c_component2LMS</identifier>
             </componentInstance>
         </itemInstances>
         <name>region3</name>
