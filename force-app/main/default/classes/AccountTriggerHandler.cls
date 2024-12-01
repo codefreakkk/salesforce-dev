@@ -144,23 +144,30 @@ public with sharing class AccountTriggerHandler {
         }
     }
 
-    public void updateRelatedContactOfAccount(List<Account> accountList, Map<Id, Account> oldAccountMap) {
-        Map<Id, String> accountMap = new Map<Id, String>();
+    public void updateRelatedContacts(List<Account> accountList, Map<Id, Account> accountOldMap) {
+        Map<Id, String> accountWithPhoneList = new Map<Id, String>();
 
         for (Account account : accountList) {
-            if (account.Phone != oldAccountMap.get(account.Id).Phone) {
-                accountMap.put(account.Id, account.Phone);
+            String oldAccountPhone = accountOldMap.get(account.Id).Phone;
+            if (account.Phone != oldAccountPhone) {
+                accountWithPhoneList.put(account.Id, account.Phone);
             }
         }
 
+        System.debug('Accounts with phone list '+ accountWithPhoneList);
+
         List<Contact> contactList = new List<Contact>();
-        for (Contact contact : [SELECT Id, Phone FROM Contact WHERE AccountId IN :accountMap.keySet()]) {
-            contact.Phone = accountMap.get(contact.Id);
+        for (Contact contact : [SELECT Id, AccountId, Phone FROM Contact WHERE AccountId IN :accountWithPhoneList.keySet()]) {
+            contact.Phone = accountWithPhoneList.get(contact.AccountId);
             contactList.add(contact);
         }
 
+        System.debug('Contacts ' + contactList);
+
         if (!contactList.isEmpty()) {
             update contactList;
+            System.debug('Contact List updated');
         }
     }
 }
+

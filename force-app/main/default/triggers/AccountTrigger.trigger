@@ -38,6 +38,9 @@ trigger AccountTrigger on Account (before insert, after insert, after update, be
                 TriggerHelper.accountDescriptionUpdate = true;
                 accountTriggerHandler.updateAccountDescriptionAfterUpdate(Trigger.New);   
             }
+
+            // when account phone field is updated update all related contact field
+            accountTriggerHandler.updateRelatedContacts(Trigger.New, Trigger.OldMap);
         }
     }
 
