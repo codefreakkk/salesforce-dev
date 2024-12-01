@@ -142,4 +142,78 @@ public class OpportunityTriggerHandler {
             System.debug('Task created');
         }
     }
+
+    // calculate total opportunity value for account after insert and update
+    public void calculateTotalOpportunityValue(List<Opportunity> opportunityList) {
+        Set<Id> accountIds = new Set<Id>();
+        for (Opportunity opportunity : opportunityList) {
+            accountIds.add(opportunity.AccountId);
+        }
+
+        List<Account> accountList = new List<Account>();
+        for (Account account : [SELECT Id, (SELECT Amount FROM Opportunities WHERE StageName = 'Closed Won') FROM Account WHERE Id IN :accountIds]) {
+            
+            // calculate total amount
+            Decimal totalAmount = 0;
+            for (Opportunity opp : account.Opportunities) {
+                totalAmount += opp.Amount;
+            }
+
+            // update total opportunity value field
+            account.Total_Opportunity_Value__c = totalAmount;
+            accountList.add(account);
+        }
+
+        System.debug('Account list : ' + accountList);
+
+        if (!accountList.isEmpty()) {
+            update accountList;
+            System.debug('Account updated');
+        }
+    }
+
+    // calculate total opportunity value for account after update
+    public void calculateTotalOpportunityValueAfterUpdate(List<Opportunity> opportunityList, Map<Id, Opportunity> oldOpportunityMap) {
+        Set<Id> accountIds = new Set<Id>();
+        for (Opportunity opportunity : opportunityList) {
+            Decimal oldOpportunityAmount = oldOpportunityMap.get(opportunity.Id).Amount;
+            String oldStageName = oldOpportunityMap.get(opportunity.Id).StageName;
+
+            if (opportunity.Amount != oldOpportunityAmount || ((opportunity.StageName != oldStageName) && opportunity.StageName == 'Closed Won')) {
+                accountIds.add(opportunity.AccountId);
+            }
+        }
+
+        List<Account> accountList = new List<Account>();
+        for (Account account : [SELECT Id, (SELECT Amount FROM Opportunities WHERE StageName = 'Closed Won') FROM Account WHERE Id IN :accountIds]) {
+            
+            // calculate total amount
+            Decimal totalAmount = 0;
+            for (Opportunity opp : account.Opportunities) {
+                totalAmount += opp.Amount;
+            }
+
+            // update total opportunity value field
+            account.Total_Opportunity_Value__c = totalAmount;
+            accountList.add(account);
+        }
+
+        System.debug('Account list : ' + accountList);
+
+        if (!accountList.isEmpty()) {
+            update accountList;
+            System.debug('Account updated');
+        }
+    }
+
+    // update opportunity stage based on close date
+    public void updateOpportunityStage(List<Opportunity> opportunityList, Map<Id, Opportunity> oldOpportunityMap) {
+        for (Opportunity opportunity : opportunityList) {
+            Date oldOpportunityDate = oldOpportunityMap.get(opportunity.Id).CloseDate;
+            String oldOpportunityStageName = oldOpportunityMap.get(opportunity.Id).StageName;
+            if (opportunity.CloseDate != oldOpportunityDate && oldOpportunityStageName != 'Closed Won' && opportunity.CloseDate == System.today()) {
+                opportunity.StageName = 'Closed Won';
+            }
+        }
+    }
 }
