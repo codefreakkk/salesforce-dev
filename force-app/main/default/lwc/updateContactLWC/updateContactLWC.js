@@ -1,11 +1,12 @@
 import { LightningElement, track, wire } from 'lwc';
+import { NavigationMixin } from 'lightning/navigation';
 import getAllContacts from "@salesforce/apex/ContactControllerLWC.getAllContacts";
 import ContactUpdateModal from 'c/contactUpdateModal';
 import { MessageContext, subscribe, unsubscribe } from 'lightning/messageService';
 import CONTACT_UPDATE_EVENT from '@salesforce/messageChannel/ContactUpdateEvent__c';
 
 
-export default class UpdateContactLWC extends LightningElement {
+export default class UpdateContactLWC extends NavigationMixin(LightningElement) {
     @track contact;
     @track allContacts;
     @track wiredContactResults;
@@ -17,14 +18,24 @@ export default class UpdateContactLWC extends LightningElement {
         {label: 'First Name', fieldName: 'FirstName', type: 'text'},
         {label: 'Last Name', fieldName: 'LastName', type: 'text'},
         {
-            label: 'Action',
+            label: 'Update Contact',
             type: 'button',
             typeAttributes: {
                 label: 'Update',
                 name: 'update',
-                variant: 'success'
+                variant: 'primary'
             }
-        }
+        },
+        {
+            label: 'View Contact',
+            type: 'button',
+            typeAttributes: {
+                label: 'view',
+                name: 'view',
+                variant: 'primary'
+            }
+        }, 
+        
     ]
 
     connectedCallback() {
@@ -52,20 +63,31 @@ export default class UpdateContactLWC extends LightningElement {
     async handleUpdate(event) {
         const actionName = event.detail.action.name;
         const row = event.detail.row;
+        const contactId = row.Id;
+        const firstName = row.FirstName;
+        const lastName = row.LastName;
 
+        // handle update 
         if (actionName === "update") {
-            const contactId = row.Id;
-            const firstName = row.FirstName;
-            const lastName = row.LastName;
-
-            console.log('Row : ', row);
-
             await ContactUpdateModal.open({
                 size: 'medium',
                 description: 'Accessible description of modal\'s purpose',
                 content: {
                     contactId, firstName, lastName
                 },
+            });
+        }
+
+        // handle redirect/view
+        if (actionName == "view") {
+            console.log("Contact id ", contactId);
+            this[NavigationMixin.Navigate]({
+                type: 'standard__recordPage', 
+                attributes: {
+                    recordId: contactId,
+                    objectApiName: 'Contact', 
+                    actionName: 'view',
+                }
             });
         }
     }

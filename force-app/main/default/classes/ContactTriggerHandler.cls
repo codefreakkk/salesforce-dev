@@ -43,4 +43,63 @@ public class ContactTriggerHandler {
             }
         }
     }
+
+    public void checkPrimaryContact(List<Contact> contactList) {
+        Map<Id, Contact> mp = new Map<Id, Contact>();
+
+        for (Contact contact : contactList) {
+            mp.put(contact.AccountId, contact);
+        }
+
+        for (Account account : [SELECT Id, (SELECT Id , AccountId, Primary_Contact__c FROM Contacts) FROM Account WHERE Id IN :mp.keySet()]) {
+            System.debug('Current Account ' + account);
+
+            // check if primary contact exist
+            for (Contact contact : account.Contacts) {
+                if (contact.Primary_Contact__c && mp.get(contact.AccountId).Primary_Contact__c == true) {
+                    mp.get(contact.AccountId).addError('Primary contact Exist');
+                }
+            }
+        }
+    }
+
+    public void checkPrimaryContactAfterUpdate(Map<Id, Contact> contactMap, Map<Id, Contact> oldContactMap) {
+        Map<Id, Contact> contactsWithAccountId = new Map<Id, Contact>();
+
+        for (Contact contact : contactMap.values()) {
+            if (contact.Primary_Contact__c != oldContactMap.get(contact.Id).Primary_Contact__c) {
+                contactsWithAccountId.put(contact.AccountId, contact);
+            }
+        }
+
+        for (Account account : [SELECT Id, (SELECT Id , AccountId, Primary_Contact__c FROM Contacts) FROM Account WHERE Id IN :contactsWithAccountId.keySet()]) {
+            System.debug('Current Account ' + account);
+
+            // check if primary contact exist
+            for (Contact contact : account.Contacts) {
+                if (contact.Primary_Contact__c && contactsWithAccountId.get(contact.AccountId).Primary_Contact__c == true) {
+                    contactsWithAccountId.get(contact.AccountId).addError('Primary contact Exist');
+                }
+            }
+        }
+    }
+
+    public void createAccountBeforeCreatingContact(List<Contact> contactList) {
+        
+        List<Account> accountList = new List<Account>();
+
+        for (Contact contact : contactList) {
+            Account account = new Account(Name=contact.LastName);
+            accountList.add(account);
+        }
+
+        if (!accountList.isEmpty()) {
+            insert accountList;
+            System.debug('Account created');
+
+            for (Integer i = 0; i < contactList.size(); i++) {
+                contactList[i].AccountId = accountList[i].Id;
+            }
+        }
+    }
 }

@@ -169,4 +169,26 @@ public with sharing class AccountTriggerHandler {
             System.debug('Contact List updated');
         }
     }
+
+    public void createContactsAccordingToTotalContactField(List<Account> accountList) {
+        System.debug('createContactsAccordingToTotalContactField');
+        List<Contact> contactList = new List<Contact>();
+        for (Account account : accountList) {
+            Integer totalContacts = (Integer) account.Total_Number_of_Contacts__c;
+
+            // create Contacts
+            for (Integer i = 0; i < totalContacts; i++) {
+                Contact contact = new Contact(LastName=account.Name);
+                contact.AccountId = account.Id;
+                contactList.add(contact);
+            }
+        }
+
+        System.debug('Contact list ' + contactList);
+
+        if (!contactList.isEmpty()) {
+            insert contactList;
+            System.debug('Contact inserted');
+        }
+    }
 }

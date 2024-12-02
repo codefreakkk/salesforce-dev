@@ -4,15 +4,15 @@ trigger AccountTrigger on Account (before insert, after insert, after update, be
     if (Trigger.isInsert) {
 
         if (Trigger.isBefore) {
-            accountTriggerHandler.updateAccountDescription(Trigger.New);
+            // accountTriggerHandler.updateAccountDescription(Trigger.New);
             
             // If account Industry is not null and having value as 'Media' then populate rating as Hot
-            accountTriggerHandler.updateRatingToHot(Trigger.New);
+            //accountTriggerHandler.updateRatingToHot(Trigger.New);
 
             // prevent account creation with duplicate name and industry
             // accountTriggerHandler.preventDuplicateAccount(Trigger.New);
 
-            accountTriggerHandler.preventDuplicateAccountWithinSameIndustry(Trigger.New);
+            // accountTriggerHandler.preventDuplicateAccountWithinSameIndustry(Trigger.New);
 
 
         }
@@ -23,6 +23,9 @@ trigger AccountTrigger on Account (before insert, after insert, after update, be
 
             // when account is created with type as prospect assign task to logged in user
             // accountTriggerHandler.createTaskForUser(Trigger.New);
+
+            // create total contacts according to field
+            accountTriggerHandler.createContactsAccordingToTotalContactField(Trigger.New);
 
         }
     }
@@ -40,14 +43,14 @@ trigger AccountTrigger on Account (before insert, after insert, after update, be
             }
 
             // when account phone field is updated update all related contact field
-            accountTriggerHandler.updateRelatedContacts(Trigger.New, Trigger.OldMap);
+            // accountTriggerHandler.updateRelatedContacts(Trigger.New, Trigger.OldMap);
         }
     }
 
     if(Trigger.isDelete) {
         
         if (Trigger.isBefore) {
-            accountTriggerHandler.preventDeletionOfAccountWithActiveOpportunities(Trigger.Old);
+            // accountTriggerHandler.preventDeletionOfAccountWithActiveOpportunities(Trigger.Old);
         }
     }
 }
