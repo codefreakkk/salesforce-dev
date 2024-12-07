@@ -170,6 +170,46 @@ public with sharing class AccountTriggerHandler {
         }
     }
 
+    public void updateRelatedContactsOptimized(Map<Id, Account> newAccountMap, Map<Id, Account> oldAccountMap) {
+        Set<Id> accountIds = new Set<Id>();
+        for (Account account : newAccountMap.values()) {
+            if (account.Phone != oldAccountMap.get(account.Id).Phone) {
+                accountIds.add(account.Id);
+            }
+        }
+
+        List<Contact> contactList = new List<Contact>();
+        for (Contact contact : [SELECT Id, AccountId, Phone FROM Contact WHERE AccountId IN :accountIds]) {
+            contact.Phone = newAccountMap.get(contact.AccountId).Phone;
+            contactList.add(contact);
+        }
+
+        if (!contactList.isEmpty()) {
+            update contactList;
+            System.debug('Contacts updated');
+        }
+    }
+
+    public void updateRelatedContactsNewAndOldField(Map<Id, Account> newAccountMap, Map<Id, Account> oldAccountMap) {
+        Set<Id> accountIds = new Set<Id>();
+        for (Account account : newAccountMap.values()) {
+            if (account.Phone != oldAccountMap.get(account.Id).Phone) {
+                accountIds.add(account.Id);
+            }
+        }
+
+        List<Contact> contactList = new List<Contact>();
+        for (Contact contact : [SELECT Id, AccountId, Phone FROM Contact WHERE AccountId IN :accountIds]) {
+            contact.Phone = newAccountMap.get(contact.AccountId).Phone;
+            contactList.add(contact);
+        }
+
+        if (!contactList.isEmpty()) {
+            update contactList;
+            System.debug('Contacts updated');
+        }
+    }
+
     public void createContactsAccordingToTotalContactField(List<Account> accountList) {
         System.debug('createContactsAccordingToTotalContactField');
         List<Contact> contactList = new List<Contact>();

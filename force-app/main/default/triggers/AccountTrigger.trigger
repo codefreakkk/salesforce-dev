@@ -25,7 +25,7 @@ trigger AccountTrigger on Account (before insert, after insert, after update, be
             // accountTriggerHandler.createTaskForUser(Trigger.New);
 
             // create total contacts according to field
-            accountTriggerHandler.createContactsAccordingToTotalContactField(Trigger.New);
+            //accountTriggerHandler.createContactsAccordingToTotalContactField(Trigger.New);
 
         }
     }
@@ -44,6 +44,9 @@ trigger AccountTrigger on Account (before insert, after insert, after update, be
 
             // when account phone field is updated update all related contact field
             // accountTriggerHandler.updateRelatedContacts(Trigger.New, Trigger.OldMap);
+
+            // when account phone field is updated update all related contact field optimized
+            //accountTriggerHandler.updateRelatedContactsOptimized(Trigger.NewMap, Trigger.OldMap);
         }
     }
 

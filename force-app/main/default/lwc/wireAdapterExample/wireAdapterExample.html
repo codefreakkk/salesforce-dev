@@ -1,0 +1,11 @@
+<template>
+    <lightning-card title="Account Info Related to this Contact">
+        <lightning-record-view-form record-id={accountId} object-api-name={objectAPIName}>
+            <lightning-output-field field-name="Name"></lightning-output-field>
+            <lightning-output-field field-name="Phone"></lightning-output-field>
+            <lightning-output-field field-name="Industry"></lightning-output-field>
+            <lightning-output-field field-name="Rating"></lightning-output-field>
+            <!-- implement the same using the field reference in javascript file -->
+        </lightning-record-view-form>
+    </lightning-card>
+</template>

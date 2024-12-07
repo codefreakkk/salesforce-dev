@@ -1,4 +1,4 @@
-import { MessageContext, subscribe, unsubscribe } from 'lightning/messageService';
+import { MessageContext, publish, subscribe, unsubscribe } from 'lightning/messageService';
 import { LightningElement, track, wire } from 'lwc';
 import MESSAGEEVENT from "@salesforce/messageChannel/MessageEvent__c"
 
@@ -20,5 +20,10 @@ export default class Component2LMS extends LightningElement {
 
     handleEvent(payload) {
         this.message = payload.data;
+    }
+
+    publishToLMS1() {
+        const payload = {data : 'Message from LMS 2'};
+        publish(this.messageContext, MESSAGEEVENT, payload);
     }
 }
