@@ -1,0 +1,40 @@
+<template>
+    <!-- Contacts -->
+     <div>
+        <h4>Contacts</h4>
+     </div>
+    <template if:true={allContacts}>
+        <lightning-datatable 
+            key-field="id" 
+            hide-checkbox-column="true"
+            data={allContacts} 
+            columns={contactColumnsOptions}>
+        </lightning-datatable>
+    </template>
+
+    <!-- cases -->
+    <div>
+        <h4>Cases</h4>
+    </div>
+    <template if:true={allCases}>
+        <lightning-datatable 
+            key-field="id" 
+            hide-checkbox-column="true"
+            data={allCases} 
+            columns={caseColumnsOptions}>
+        </lightning-datatable>
+    </template>
+
+    <!-- opp -->
+     <div>
+        <h4>Opportunities</h4>
+     </div>
+    <template if:true={allOpportunities}>
+        <lightning-datatable 
+            key-field="id" 
+            hide-checkbox-column="true"
+            data={allOpportunities} 
+            columns={opportunityColumnsOptions}>
+        </lightning-datatable>
+    </template>
+</template>

@@ -3,6 +3,12 @@
     <flexiPageRegions>
         <itemInstances>
             <componentInstance>
+                <componentName>accountWithRelatedObjects</componentName>
+                <identifier>c_accountWithRelatedObjects</identifier>
+            </componentInstance>
+        </itemInstances>
+        <itemInstances>
+            <componentInstance>
                 <componentInstanceProperties>
                     <name>flowLayout</name>
                     <value>oneColumn</value>

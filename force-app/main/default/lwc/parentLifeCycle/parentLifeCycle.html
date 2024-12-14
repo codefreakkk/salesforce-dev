@@ -1,0 +1,7 @@
+<template>
+    <lightning-card>
+        <h2>Parent Component</h2>
+        <lightning-input label="name" value={name} onchange={handleChange}></lightning-input>
+        <c-child-life-cycle prop={name}></c-child-life-cycle>
+    </lightning-card>    
+</template>

@@ -1,0 +1,12 @@
+<template>
+    <lightning-combobox
+        label="Account"
+        options={accountOptions}
+        onchange={handleAccountChange}>
+    </lightning-combobox>
+
+    <div lwc:if={accountId}>
+        <c-related-contacts account-id={accountId}></c-related-contacts>
+    </div>
+    
+</template>
